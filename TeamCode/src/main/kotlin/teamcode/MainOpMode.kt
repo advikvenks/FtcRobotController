@@ -32,49 +32,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
+import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.util.ElapsedTime
 import kotlin.math.abs
 import kotlin.math.max
 
-/*
- * This file contains an example of a Linear "OpMode".
- * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
- * The names of OpModes appear on the menu of the FTC Driver Station.
- * When a selection is made from the menu, the corresponding OpMode is executed.
- *
- * This particular OpMode illustrates driving a 4-motor Omni-Directional (or Holonomic) robot.
- * This code will work with either a Mecanum-Drive or an X-Drive train.
- * Both of these drives are illustrated at https://gm0.org/en/latest/docs/robot-design/drivetrains/holonomic.html
- * Note that a Mecanum drive must display an X roller-pattern when viewed from above.
- *
- * Also note that it is critical to set the correct rotation direction for each motor.  See details below.
- *
- * Holonomic drives provide the ability for the robot to move in three axes (directions) simultaneously.
- * Each motion axis is controlled by one Joystick axis.
- *
- * 1) Axial:    Driving forward and backward               Left-joystick Forward/Backward
- * 2) Lateral:  Strafing right and left                     Left-joystick Right and Left
- * 3) Yaw:      Rotating Clockwise and counter clockwise    Right-joystick Right and Left
- *
- * This code is written assuming that the right-side motors need to be reversed for the robot to drive forward.
- * When you first test your robot, if it moves backward when you push the left stick forward, then you must flip
- * the direction of all 4 motors (see code below).
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- */
-//sealed class KickerState {
-//    object default : KickerState()5
-//    object kicked : KickerState()
-//
-////    data class
-//}
-
 @Suppress("unused")
 @TeleOp(name = "Main OpMode", group = "Linear OpMode")
 class MainOpMode : LinearOpMode() {
-    // Declare OpMode members for each of the 4 motors.
-
     private val runtime = ElapsedTime()
     private lateinit var frontLeftDrive: DcMotor
     private lateinit var backLeftDrive: DcMotor
@@ -85,9 +50,14 @@ class MainOpMode : LinearOpMode() {
 
     private lateinit var launcherMotor: DcMotor
 
-//    private lateinit var kickerServo: Servo
+    private lateinit var kickerServo: Servo
 
-    private fun initMotors() {
+    //    This function initializes all the devices like servos and motors and stuff
+//    To add motors, go to the driver station app > menu > configure > control hub portal > (control hub/expansion hub) > type of device > port and name
+//    Spam back, then save when prompted
+//    Then, declare it in a variable up here
+//    After that, look at the comment in this function
+    private fun initDevices() {
         frontLeftDrive = hardwareMap.get(DcMotor::class.java, "front_left")
         backLeftDrive = hardwareMap.get(DcMotor::class.java, "back_left")
         frontRightDrive = hardwareMap.get(DcMotor::class.java, "front_right")
@@ -97,14 +67,18 @@ class MainOpMode : LinearOpMode() {
 
         launcherMotor = hardwareMap.get(DcMotor::class.java, "launcher_motor")
 
-//        kickerServo = hardwareMap.get(Servo::class.java, "transferServoLeft")
+//        Finally, to initialize the device, use this hardwareMap line with whatever the name of the device is in ""
+//        In this case, I am initializing the kicker servo, so i call it kickerServo
+//        This name should match whatever you saved in the configure menu
+        kickerServo = hardwareMap.get(Servo::class.java, "kickerServo")
 
-        frontLeftDrive!!.direction = DcMotorSimple.Direction.REVERSE
-        backLeftDrive!!.direction = DcMotorSimple.Direction.REVERSE
-        frontRightDrive!!.direction = DcMotorSimple.Direction.FORWARD
-        backRightDrive!!.direction = DcMotorSimple.Direction.FORWARD
+        frontLeftDrive.direction = DcMotorSimple.Direction.REVERSE
+        backLeftDrive.direction = DcMotorSimple.Direction.REVERSE
+        frontRightDrive.direction = DcMotorSimple.Direction.FORWARD
+        backRightDrive.direction = DcMotorSimple.Direction.FORWARD
     }
 
+    //You probably should not have to modify this function as it is the main drive logic
     private fun doMecanumDrive(axial: Double, lateral: Double, yaw: Double) {
         var max: Double
 
@@ -129,10 +103,10 @@ class MainOpMode : LinearOpMode() {
         }
 
         // Send calculated power to wheels
-        frontLeftDrive!!.power = frontLeftPower
-        frontRightDrive!!.power = frontRightPower
-        backLeftDrive!!.power = backLeftPower
-        backRightDrive!!.power = backRightPower
+        frontLeftDrive.power = frontLeftPower
+        frontRightDrive.power = frontRightPower
+        backLeftDrive.power = backLeftPower
+        backRightDrive.power = backRightPower
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Info", "Run Time: $runtime")
@@ -140,54 +114,91 @@ class MainOpMode : LinearOpMode() {
         telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower)
     }
 
-    private fun controlIntake() {
 
+    //The state machine enum for the servo
+    //I recommend NOT editing this
+    enum class KickerState {
+        RESET,
+        KICKED
+    }
+
+    private var kickerState = KickerState.RESET
+
+    // Servo positions — adjust based on your servo’s physical range
+    // kickedPos is how far you want the servo to move from wherever .4 is
+    // You're gonna have to do a lot of trial and error possible to get a good number
+    // Right now, its at 30 degree
+    private val resetPos = 0.7   // starting position
+    private val kickedPos = 1 - (30.0 / 180.0)  // ~° backward movement
+
+    private fun controlKickerAuto() {
+        if (gamepad2.circle && kickerState == KickerState.RESET) {
+            kickerServo.position = kickedPos
+            kickerState = KickerState.KICKED
+
+            sleep(250)  // wait for the kick motion
+            kickerServo.position = resetPos
+            kickerState = KickerState.RESET
+        }
+    }
+
+    //This function is pretty self explanatory
+    private fun controlIntake() {
         if (gamepad2.cross) {
             intakeMotor.power = 0.4
+        } else {
+            intakeMotor.power = 0.0
         }
     }
 
-
+    //This one is too
     private fun controlLauncher() {
         if (gamepad2.triangle) {
-            launcherMotor.power = -1.0
+            launcherMotor.power = 1.0
+        } else {
+            launcherMotor.power = 0.0
         }
     }
 
-    private fun intakeToLauncher() {
+    private fun speedUpLauncher() {
+        val startTime = runtime.seconds()
 
+        launcherMotor.power = .5 //starting power
+
+        while (runtime.seconds() - startTime < 0.5) {
+            val elapsedTime = runtime.seconds() - startTime
+
+            val newPower = 0.5 + elapsedTime
+            launcherMotor.power = newPower
+        }
+
+        launcherMotor.power = 1.0
     }
 
-    private fun launchSequence() {
-        intakeMotor.power = 0.0
-        launcherMotor.power = 0.0
+    private fun slowDownLauncher() {
+        val startTime = runtime.seconds()
 
-        launcherMotor.power = -1.0
-        sleep(2000)
-        intakeMotor.power = 0.5
+        while (runtime.seconds() - startTime < 0.5) {
+            val elapsedTime = runtime.seconds() - startTime
 
-        sleep(3000)
-
-        intakeMotor.power = 0.0
-
-        sleep(1000)
+            val newPower = 1.0 - (elapsedTime * 2)
+            launcherMotor.power = newPower
+        }
 
         launcherMotor.power = 0.0
     }
 
     override fun runOpMode() {
 
-        initMotors()
-        // Wait for the game to start (driver presses START)
+        initDevices() //initialize the motors and servos and stuff
         telemetry.addData("Status", "Initialized")
         telemetry.update()
 
         waitForStart()
         runtime.reset()
 
-        // run until the end of the match (driver presses STOP)
+        //This is the main control loop and basically is a loop that runs until we end the opmode
         while (opModeIsActive()) {
-            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             val axial = -gamepad1.left_stick_y.toDouble() // Note: pushing stick forward gives negative value
             val lateral = gamepad1.left_stick_x.toDouble()
             val yaw = gamepad1.right_stick_x.toDouble()
@@ -195,11 +206,15 @@ class MainOpMode : LinearOpMode() {
             doMecanumDrive(axial, lateral, yaw)
 
             controlIntake()
-            intakeToLauncher()
             controlLauncher()
+            controlKickerAuto()
 
             if (gamepad2.left_bumper) {
-                launchSequence()
+                speedUpLauncher()
+            }
+
+            if (gamepad2.right_bumper) {
+                slowDownLauncher()
             }
 
             telemetry.update()
