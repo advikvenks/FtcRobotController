@@ -52,6 +52,8 @@ class MainOpMode : LinearOpMode() {
 
     private lateinit var kickerServo: Servo
 
+    private lateinit var flickerMotor: DcMotor
+
     //    This function initializes all the devices like servos and motors and stuff
 //    To add motors, go to the driver station app > menu > configure > control hub portal > (control hub/expansion hub) > type of device > port and name
 //    Spam back, then save when prompted
@@ -71,6 +73,9 @@ class MainOpMode : LinearOpMode() {
 //        In this case, I am initializing the kicker servo, so i call it kickerServo
 //        This name should match whatever you saved in the configure menu
         kickerServo = hardwareMap.get(Servo::class.java, "kickerServo")
+
+        flickerMotor = hardwareMap.get(DcMotor::class.java, "flickerMotor")
+
 
         frontLeftDrive.direction = DcMotorSimple.Direction.REVERSE
         backLeftDrive.direction = DcMotorSimple.Direction.REVERSE
@@ -175,6 +180,25 @@ class MainOpMode : LinearOpMode() {
         launcherMotor.power = 1.0
     }
 
+    private fun launcherFlick() {
+        flickerMotor.power = 0.35
+        smartSleep(.1)
+        flickerMotor.power = 0.0
+
+        smartSleep(.2)
+
+        flickerMotor.power = -0.35
+        smartSleep(.1)
+        flickerMotor.power = 0.0
+    }
+
+    private fun smartSleep(seconds: Double) {
+        val timer = ElapsedTime()
+        while (timer.seconds() < seconds && opModeIsActive()) {
+
+        }
+    }
+
     private fun slowDownLauncher() {
         val startTime = runtime.seconds()
 
@@ -215,6 +239,10 @@ class MainOpMode : LinearOpMode() {
 
             if (gamepad2.right_bumper) {
                 slowDownLauncher()
+            }
+
+            if (gamepad2.squareWasReleased()) {
+                launcherFlick()
             }
 
             telemetry.update()
