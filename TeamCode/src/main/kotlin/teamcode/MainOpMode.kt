@@ -50,8 +50,6 @@ class MainOpMode : LinearOpMode() {
 
     private lateinit var launcherMotor: DcMotor
 
-    private lateinit var kickerServo: Servo
-
     private lateinit var flickerMotor: DcMotor
 
     //    This function initializes all the devices like servos and motors and stuff
@@ -68,11 +66,6 @@ class MainOpMode : LinearOpMode() {
         intakeMotor = hardwareMap.get(DcMotor::class.java, "intake_motor")
 
         launcherMotor = hardwareMap.get(DcMotor::class.java, "launcher_motor")
-
-//        Finally, to initialize the device, use this hardwareMap line with whatever the name of the device is in ""
-//        In this case, I am initializing the kicker servo, so i call it kickerServo
-//        This name should match whatever you saved in the configure menu
-        kickerServo = hardwareMap.get(Servo::class.java, "kickerServo")
 
         flickerMotor = hardwareMap.get(DcMotor::class.java, "flickerMotor")
 
@@ -119,35 +112,6 @@ class MainOpMode : LinearOpMode() {
         telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower)
     }
 
-
-    //The state machine enum for the servo
-    //I recommend NOT editing this
-    enum class KickerState {
-        RESET,
-        KICKED
-    }
-
-    private var kickerState = KickerState.RESET
-
-    // Servo positions — adjust based on your servo’s physical range
-    // kickedPos is how far you want the servo to move from wherever .4 is
-    // You're gonna have to do a lot of trial and error possible to get a good number
-    // Right now, its at 30 degree
-    private val resetPos = 0.7   // starting position
-    private val kickedPos = 1 - (30.0 / 180.0)  // ~° backward movement
-
-    private fun controlKickerAuto() {
-        if (gamepad2.circle && kickerState == KickerState.RESET) {
-            kickerServo.position = kickedPos
-            kickerState = KickerState.KICKED
-
-            sleep(250)  // wait for the kick motion
-            kickerServo.position = resetPos
-            kickerState = KickerState.RESET
-        }
-    }
-
-    //This function is pretty self explanatory
     private fun controlIntake() {
         if (gamepad2.cross) {
             intakeMotor.power = 0.4
@@ -156,7 +120,6 @@ class MainOpMode : LinearOpMode() {
         }
     }
 
-    //This one is too
     private fun controlLauncher() {
         if (gamepad2.triangle) {
             launcherMotor.power = 1.0
@@ -231,7 +194,6 @@ class MainOpMode : LinearOpMode() {
 
             controlIntake()
             controlLauncher()
-            controlKickerAuto()
 
             if (gamepad2.left_bumper) {
                 speedUpLauncher()
