@@ -58,16 +58,16 @@ class MainOpMode : LinearOpMode() {
 //    Then, declare it in a variable up here
 //    After that, look at the comment in this function
     private fun initDevices() {
-        frontLeftDrive = hardwareMap.get(DcMotor::class.java, "front_left")
-        backLeftDrive = hardwareMap.get(DcMotor::class.java, "back_left")
-        frontRightDrive = hardwareMap.get(DcMotor::class.java, "front_right")
-        backRightDrive = hardwareMap.get(DcMotor::class.java, "back_right")
+        frontLeftDrive = hardwareMap.get(DcMotor::class.java, "frontLeft")
+        backLeftDrive = hardwareMap.get(DcMotor::class.java, "backLeft")
+        frontRightDrive = hardwareMap.get(DcMotor::class.java, "frontRight")
+        backRightDrive = hardwareMap.get(DcMotor::class.java, "backRight")
 
-        intakeMotor = hardwareMap.get(DcMotor::class.java, "intake_motor")
+        intakeMotor = hardwareMap.get(DcMotor::class.java, "intakeMotor")
 
-        launcherMotor = hardwareMap.get(DcMotor::class.java, "launcher_motor")
+        launcherMotor = hardwareMap.get(DcMotor::class.java, "launcherMotor")
 
-        flickerMotor = hardwareMap.get(DcMotor::class.java, "flickerMotor")
+        flickerMotor = hardwareMap.get(DcMotor::class.java, "launcherLoader")
 
 
         frontLeftDrive.direction = DcMotorSimple.Direction.REVERSE

@@ -1,22 +1,20 @@
 package teamcode
 
-import com.arcrobotics.ftclib.command.InstantCommand
-import com.arcrobotics.ftclib.command.button.Button
+import LaunchThreeBalls
+import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.button.GamepadButton
-import com.arcrobotics.ftclib.controller.PIDController
 import com.arcrobotics.ftclib.drivebase.MecanumDrive
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.DcMotor
 import com.arcrobotics.ftclib.hardware.motors.Motor
-import com.arcrobotics.ftclib.hardware.motors.MotorEx
-import com.qualcomm.robotcore.hardware.HardwareMap
+import teamcode.commands.DefaultDriveCommand
+import teamcode.subsystems.DriveSubsystem
+import teamcode.subsystems.LauncherSubsytem
 
 
 @TeleOp(name = "Experimental Op Mode")
-class MainOpModeAdvanced : LinearOpMode() {
+class MainOpModeAdvanced : CommandOpMode() {
     private lateinit var backLeft: Motor
     private lateinit var backRight: Motor
     private lateinit var frontLeft: Motor
@@ -25,8 +23,6 @@ class MainOpModeAdvanced : LinearOpMode() {
     private lateinit var intakeMotor: Motor
     private lateinit var launcherMotor: Motor
     private lateinit var launcherLoader: Motor
-
-    private val targetRPM = 5000
 
     private lateinit var driveGamepad: GamepadEx
     private lateinit var launchGamepad: GamepadEx
@@ -42,44 +38,36 @@ class MainOpModeAdvanced : LinearOpMode() {
         frontRight = Motor(hardwareMap, "frontRight", Motor.GoBILDA.RPM_312)
 
         intakeMotor = Motor(hardwareMap, "intakeMotor", Motor.GoBILDA.RPM_312)
-
         launcherMotor = Motor(hardwareMap, "launcherMotor")
-
         launcherLoader = Motor(hardwareMap, "launcherLoader", Motor.GoBILDA.RPM_312)
 
         backLeft.inverted = true
         frontLeft.inverted = true
+
+        launcherLoader.resetEncoder()
     }
 
     private fun initGamePads() {
         driveGamepad = GamepadEx(gamepad1)
         launchGamepad = GamepadEx(gamepad2)
 
-        launchButton = GamepadButton(launchGamepad, GamepadKeys.Button.Y)
+        launchButton = GamepadButton(launchGamepad, GamepadKeys.Button.B)
         flickButton = GamepadButton(launchGamepad, GamepadKeys.Button.X)
         intakeButton = GamepadButton(launchGamepad, GamepadKeys.Button.A)
     }
 
-    override fun runOpMode() {
-
+    override fun initialize() {
         initMotors()
         initGamePads()
 
-        val launcher = Launcher(launcherMotor as MotorEx, launcherLoader)
+        val drive = DriveSubsystem(frontLeft, frontRight, backLeft, backRight)
+        drive.defaultCommand = DefaultDriveCommand(drive, driveGamepad)
+
+        val launcher = LauncherSubsytem(launcherMotor, launcherLoader, telemetry)
         val launchThreeBallsCommand = LaunchThreeBalls(launcher)
 
-        val drive = MecanumDrive(frontLeft, frontRight, backLeft, backRight)
-
-        waitForStart()
-
-        while (opModeIsActive()) {
-            val x = driveGamepad.leftX
-            val y = driveGamepad.leftY
-            val rx = driveGamepad.rightX
-
-            drive.driveRobotCentric(x, y, rx)
-
-            launchButton.whenPressed(launchThreeBallsCommand)
-        }
+        launchButton.whenPressed(launchThreeBallsCommand)
     }
+
+
 }
