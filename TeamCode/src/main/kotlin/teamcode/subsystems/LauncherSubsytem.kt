@@ -12,8 +12,8 @@ class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telem
     init {
         loadMotor.resetEncoder()
         loadMotor.setRunMode(Motor.RunMode.PositionControl)
-        loadMotor.positionCoefficient = 0.1
-        loadMotor.setPositionTolerance(3.0)
+        loadMotor.positionCoefficient = 0.04
+        loadMotor.setPositionTolerance(10.0)
         loadMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
     }
 
@@ -54,7 +54,7 @@ class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telem
 
     override fun periodic() {
         if (isLoading || isReturning) {
-            loadMotor.set(0.025)
+            loadMotor.set(0.1)
         }
 
         telemetry.addData("Load Motor Position", loadMotor.encoder.position)

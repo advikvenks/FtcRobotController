@@ -1,8 +1,9 @@
 import com.arcrobotics.ftclib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
+import teamcode.subsystems.IntakeSubsystem
 import teamcode.subsystems.LauncherSubsytem
 
-class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
+class LaunchThreeBalls(val launcher: LauncherSubsytem, val intake: IntakeSubsystem) : CommandBase() {
     private val timer = ElapsedTime()
     private var state = LaunchState.SPIN_UP
     private var ballsLaunched = 0
@@ -16,7 +17,7 @@ class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
     }
 
     init {
-        addRequirements(launcher)
+        addRequirements(launcher, intake)
     }
 
     override fun initialize() {
@@ -31,7 +32,7 @@ class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
         when (state) {
             LaunchState.SPIN_UP -> {
                 if (timer.seconds() >= 1.0) {
-                    launcher.startLoadingBall(90)
+                    launcher.startLoadingBall(75)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
@@ -60,8 +61,8 @@ class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
             }
 
             LaunchState.WAITING -> {
-                if (timer.seconds() >= 1.0) {
-                    launcher.startLoadingBall(90)
+                if (timer.seconds() >= 2.0) {
+                    launcher.startLoadingBall(75)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
