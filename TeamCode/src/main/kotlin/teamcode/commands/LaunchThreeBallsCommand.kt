@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import teamcode.subsystems.IntakeSubsystem
 import teamcode.subsystems.LauncherSubsytem
 
-class LaunchThreeBalls(val launcher: LauncherSubsytem, val intake: IntakeSubsystem) : CommandBase() {
+class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
     private val timer = ElapsedTime()
     private var state = LaunchState.SPIN_UP
     private var ballsLaunched = 0
@@ -17,7 +17,7 @@ class LaunchThreeBalls(val launcher: LauncherSubsytem, val intake: IntakeSubsyst
     }
 
     init {
-        addRequirements(launcher, intake)
+        addRequirements(launcher)
     }
 
     override fun initialize() {
