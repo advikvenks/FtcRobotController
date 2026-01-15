@@ -98,6 +98,7 @@ class BackupOpMode : LinearOpMode() {
         } else {
             launcherMotor.power = 0.0
         }
+        telemetry.addData("Launcher Power: ", "%4.2f", launcherMotor.power)
     }
 
     private fun speedUpLauncher() {

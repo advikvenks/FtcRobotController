@@ -1,17 +1,12 @@
 package teamcode.autonomous
 
-import LaunchThreeBalls
-import com.arcrobotics.ftclib.command.Command
+import LaunchBallsCommand
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
-import com.arcrobotics.ftclib.command.button.GamepadButton
-import com.arcrobotics.ftclib.gamepad.GamepadEx
-import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.arcrobotics.ftclib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import teamcode.commands.DefaultDriveCommand
-import teamcode.commands.DriveByDistanceCommand
+import teamcode.commands.DriveByTimeCommand
 import teamcode.commands.IntakeCommand
 import teamcode.subsystems.DriveSubsystem
 import teamcode.subsystems.IntakeSubsystem
@@ -23,10 +18,9 @@ class MainAutoRed : CommandOpMode() {
     private lateinit var backRight: Motor
     private lateinit var frontLeft: Motor
     private lateinit var frontRight: Motor
-
-    private lateinit var intakeMotor: MotorEx
     private lateinit var launcherMotor: Motor
     private lateinit var launcherLoader: Motor
+    private lateinit var intakeMotor: MotorEx
     private fun initMotors() {
         backLeft = Motor(hardwareMap, "backLeft", Motor.GoBILDA.RPM_312)
         backRight = Motor(hardwareMap, "backRight", Motor.GoBILDA.RPM_312)
@@ -35,6 +29,8 @@ class MainAutoRed : CommandOpMode() {
 
         launcherMotor = Motor(hardwareMap, "launcherMotor")
         launcherLoader = Motor(hardwareMap, "launcherLoader", Motor.GoBILDA.RPM_312)
+
+        intakeMotor = MotorEx(hardwareMap, "intakeMotor", Motor.GoBILDA.RPM_312)
 
         backLeft.inverted = true
         frontLeft.inverted = true
@@ -48,14 +44,29 @@ class MainAutoRed : CommandOpMode() {
         val drive = DriveSubsystem(frontLeft, frontRight, backLeft, backRight)
 
         val launcher = LauncherSubsytem(launcherMotor, launcherLoader, telemetry)
-        val launchThreeBallsCommand = LaunchThreeBalls(launcher)
+        val launchBallsCommand = LaunchBallsCommand(launcher, 1.0, 3)
 
-        val distance = 6.0
+        val intake = IntakeSubsystem(intakeMotor, telemetry)
 
-        schedule(
-            SequentialCommandGroup(
-                DriveByDistanceCommand(drive,distance,distance,distance,distance,0.5)
+        val power = 0.4
+
+        waitForStart()
+
+        if (opModeIsActive()) {
+            schedule(
+                SequentialCommandGroup (
+                    DriveByTimeCommand(drive, power, -power, -power, power, 1.5),
+                    launchBallsCommand,
+                    DriveByTimeCommand(drive, -power, power, power, -power, 1.5),
+                    DriveByTimeCommand(drive, -power, -power, -power, -power, 0.2),
+                    DriveByTimeCommand(drive, -power, power, power, -power, 4.0, 5.0),
+
+                    DriveByTimeCommand(drive, power, -power, -power, power, 4.0),
+                    DriveByTimeCommand(drive, power, power, power, power, 0.2),
+                    DriveByTimeCommand(drive, power, -power, -power, power, 1.5),
+                    launchBallsCommand,
+                )
             )
-        )
+        }
     }
 }

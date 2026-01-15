@@ -1,6 +1,6 @@
 package teamcode.teleop
 
-import LaunchThreeBalls
+import LaunchBallsCommand
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.button.GamepadButton
 import com.arcrobotics.ftclib.gamepad.GamepadEx
@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.arcrobotics.ftclib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import teamcode.commands.DefaultDriveCommand
+import teamcode.commands.DefaultLauncherCommand
 import teamcode.commands.IntakeCommand
 import teamcode.commands.LoadLauncherCommand
 import teamcode.subsystems.DriveSubsystem
@@ -30,9 +31,12 @@ class MainOpMode : CommandOpMode() {
     private lateinit var launchGamepad: GamepadEx
 
 
-    private lateinit var launchButton: GamepadButton
+    private lateinit var longThreeLaunchButton: GamepadButton
+    private lateinit var longOneLaunchButton: GamepadButton
+    private lateinit var shortThreeLaunchButton: GamepadButton
+    private lateinit var shortOneLaunchButton: GamepadButton
+
     private lateinit var loadButton: GamepadButton
-    private lateinit var intakeButton: GamepadButton
     private fun initMotors() {
         backLeft = Motor(hardwareMap, "backLeft", Motor.GoBILDA.RPM_312)
         backRight = Motor(hardwareMap, "backRight", Motor.GoBILDA.RPM_312)
@@ -45,6 +49,8 @@ class MainOpMode : CommandOpMode() {
 
         backLeft.inverted = true
         frontLeft.inverted = true
+        backRight.inverted = true
+        frontRight.inverted = true
 
         launcherLoader.resetEncoder()
     }
@@ -53,9 +59,12 @@ class MainOpMode : CommandOpMode() {
         driveGamepad = GamepadEx(gamepad1)
         launchGamepad = GamepadEx(gamepad2)
 
-        launchButton = GamepadButton(launchGamepad, GamepadKeys.Button.B)
-        loadButton = GamepadButton(launchGamepad, GamepadKeys.Button.X)
-        intakeButton = GamepadButton(launchGamepad, GamepadKeys.Button.A)
+        longThreeLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.B)
+        longOneLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.A)
+        shortThreeLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.Y)
+        shortOneLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.X)
+
+        loadButton = GamepadButton(launchGamepad, GamepadKeys.Button.DPAD_UP)
     }
 
     override fun initialize() {
@@ -66,14 +75,21 @@ class MainOpMode : CommandOpMode() {
         drive.defaultCommand = DefaultDriveCommand(drive, driveGamepad)
 
         val intake = IntakeSubsystem(intakeMotor, telemetry)
+
         val intakeCommand = IntakeCommand(intake, launchGamepad)
         intake.defaultCommand = intakeCommand
 
         val launcher = LauncherSubsytem(launcherMotor, launcherLoader, telemetry)
-        val launchThreeBallsCommand = LaunchThreeBalls(launcher, intake)
+        val defaultLauncherCommand = DefaultLauncherCommand(launcher, launchGamepad)
+        launcher.defaultCommand = defaultLauncherCommand
+
         val loadCommand = LoadLauncherCommand(launcher)
 
-        launchButton.whenPressed(launchThreeBallsCommand)
-        loadButton.whenReleased(loadCommand)
+        longThreeLaunchButton.whenPressed(LaunchBallsCommand(launcher, 1.0, 3))
+        longOneLaunchButton.whenPressed(LaunchBallsCommand(launcher, 1.0, 1))
+        shortThreeLaunchButton.whenPressed(LaunchBallsCommand(launcher, 0.8, 3))
+        shortOneLaunchButton.whenPressed(LaunchBallsCommand(launcher, 0.8, 1))
+
+        loadButton.whenPressed(loadCommand)
     }
 }

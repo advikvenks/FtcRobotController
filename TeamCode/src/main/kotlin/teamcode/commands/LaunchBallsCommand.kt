@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import teamcode.subsystems.IntakeSubsystem
 import teamcode.subsystems.LauncherSubsytem
 
-class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
+class LaunchBallsCommand(val launcher: LauncherSubsytem, val power: Double, val balls: Int) : CommandBase() {
     private val timer = ElapsedTime()
     private var state = LaunchState.SPIN_UP
     private var ballsLaunched = 0
@@ -21,18 +21,22 @@ class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
     }
 
     override fun initialize() {
+        launcher.telemetryUpdate()
         launcher.resetLoader()
         timer.reset()
         state = LaunchState.SPIN_UP
         ballsLaunched = 0
-        launcher.speedUpLauncher()
+        launcher.speedUpLauncher(power * 0.5)
     }
 
     override fun execute() {
         when (state) {
             LaunchState.SPIN_UP -> {
-                if (timer.seconds() >= 1.0) {
-                    launcher.startLoadingBall(75)
+                if (timer.seconds() >= 1.5) {
+                    launcher.speedUpLauncher(power)
+                }
+                if (timer.seconds() >= 3.0) {
+                    launcher.startLoadingBall(90)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
@@ -50,9 +54,8 @@ class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
                 if (launcher.isReturningComplete()) {
                     launcher.resetLoader()
                     ballsLaunched++
-                    if (ballsLaunched >= 3) {
+                    if (ballsLaunched >= balls) {
                         state = LaunchState.DONE
-                        launcher.slowDownLauncher()
                     } else {
                         state = LaunchState.WAITING
                         timer.reset()
@@ -61,15 +64,21 @@ class LaunchThreeBalls(val launcher: LauncherSubsytem) : CommandBase() {
             }
 
             LaunchState.WAITING -> {
-                if (timer.seconds() >= 2.0) {
-                    launcher.startLoadingBall(75)
+                if (timer.seconds() >= 2) {
+                    launcher.startLoadingBall(90)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
             }
 
+
             LaunchState.DONE -> {
-                launcher.resetLoader()
+                timer.reset()
+
+                if (timer.seconds() >= 3.0) {
+                    launcher.slowDownLauncher()
+                    launcher.resetLoader()
+                }
             }
         }
     }

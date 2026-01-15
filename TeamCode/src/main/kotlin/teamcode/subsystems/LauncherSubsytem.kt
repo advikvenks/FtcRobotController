@@ -9,11 +9,13 @@ class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telem
     private var isLoading = false
     private var isReturning = false
 
+    private val cpr = 28
+
     init {
         loadMotor.resetEncoder()
         loadMotor.setRunMode(Motor.RunMode.PositionControl)
         loadMotor.positionCoefficient = 0.04
-        loadMotor.setPositionTolerance(10.0)
+        loadMotor.setPositionTolerance(15.0)
         loadMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
     }
 
@@ -44,12 +46,16 @@ class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telem
         isReturning = false
     }
 
-    fun speedUpLauncher() {
-        launcherMotor.set(1.0)
+    fun speedUpLauncher(power: Double) {
+        launcherMotor.set(power)
     }
 
     fun slowDownLauncher() {
-        launcherMotor.set(0.0)
+        launcherMotor.stopMotor()
+    }
+
+    fun rawPowerControl(power: Double) {
+        launcherMotor.set(power)
     }
 
     override fun periodic() {
@@ -68,5 +74,9 @@ class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telem
     fun resetLoader() {
         loadMotor.stopMotor()
         loadMotor.resetEncoder()
+    }
+
+    fun telemetryUpdate() {
+        telemetry.addData("Launcher motor", launcherMotor.get())
     }
 }
