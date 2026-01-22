@@ -16,8 +16,8 @@ import teamcode.subsystems.DriveSubsystem
 import teamcode.subsystems.IntakeSubsystem
 import teamcode.subsystems.LauncherSubsytem
 
-@TeleOp(name = "Main Op Mode")
-class MainOpMode : CommandOpMode() {
+@TeleOp(name = "Singleplayer Op Mode")
+class SingleplayerOpMode : CommandOpMode() {
     private lateinit var backLeft: Motor
     private lateinit var backRight: Motor
     private lateinit var frontLeft: Motor
@@ -59,12 +59,12 @@ class MainOpMode : CommandOpMode() {
         driveGamepad = GamepadEx(gamepad1)
         launchGamepad = GamepadEx(gamepad2)
 
-        longThreeLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.B)
-        longOneLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.A)
-        shortThreeLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.Y)
-        shortOneLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.X)
+        longThreeLaunchButton = GamepadButton(driveGamepad, GamepadKeys.Button.B)
+        longOneLaunchButton = GamepadButton(driveGamepad, GamepadKeys.Button.A)
+        shortThreeLaunchButton = GamepadButton(driveGamepad, GamepadKeys.Button.Y)
+        shortOneLaunchButton = GamepadButton(driveGamepad, GamepadKeys.Button.X)
 
-        loadButton = GamepadButton(launchGamepad, GamepadKeys.Button.DPAD_UP)
+        loadButton = GamepadButton(driveGamepad, GamepadKeys.Button.DPAD_UP)
     }
 
     override fun initialize() {
@@ -76,12 +76,11 @@ class MainOpMode : CommandOpMode() {
 
         val intake = IntakeSubsystem(intakeMotor, telemetry)
 
-        val intakeCommand = IntakeCommand(intake, launchGamepad)
-        intake.defaultCommand = intakeCommand
+        val intakeCommand = IntakeCommand(intake, driveGamepad)
+        intake.defaultCommand = intakeCommand   
 
         val launcher = LauncherSubsytem(launcherMotor, launcherLoader, telemetry)
-        val defaultLauncherCommand = DefaultLauncherCommand(launcher, launchGamepad)
-        launcher.defaultCommand = defaultLauncherCommand
+        val defaultLauncherCommand = DefaultLauncherCommand(launcher, driveGamepad)
 
         val loadCommand = LoadLauncherCommand(launcher, telemetry)
 

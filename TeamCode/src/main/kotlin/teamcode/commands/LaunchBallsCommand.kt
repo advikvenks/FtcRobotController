@@ -26,15 +26,12 @@ class LaunchBallsCommand(val launcher: LauncherSubsytem, val power: Double, val 
         timer.reset()
         state = LaunchState.SPIN_UP
         ballsLaunched = 0
-        launcher.speedUpLauncher(power * 0.5)
+        launcher.speedUpLauncher(power)
     }
 
     override fun execute() {
         when (state) {
             LaunchState.SPIN_UP -> {
-                if (timer.seconds() >= 1.5) {
-                    launcher.speedUpLauncher(power)
-                }
                 if (timer.seconds() >= 3.0) {
                     launcher.startLoadingBall(90)
                     state = LaunchState.LOADING

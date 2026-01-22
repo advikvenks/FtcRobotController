@@ -15,7 +15,7 @@ class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telem
         loadMotor.resetEncoder()
         loadMotor.setRunMode(Motor.RunMode.PositionControl)
         loadMotor.positionCoefficient = 0.04
-        loadMotor.setPositionTolerance(15.0)
+        loadMotor.setPositionTolerance(30.0)
         loadMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
     }
 
