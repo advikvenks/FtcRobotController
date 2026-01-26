@@ -3,14 +3,14 @@ package teamcode.commands
 import com.arcrobotics.ftclib.command.CommandBase
 import teamcode.subsystems.DriveSubsystem
 
-class DriveByDistanceCommand(private val drive: DriveSubsystem, val bl: Double, val br: Double, val fl: Double, val fr: Double, val power: Double) : CommandBase() {
+class DriveByDistanceCommand(private val drive: DriveSubsystem, val distance: Double, val moveDeg: Double, val headingDeg: Double, val power: Double, val timeOutS: Double) : CommandBase() {
     init {
         addRequirements(drive)
     }
 
     override fun initialize() {
         drive.initPosControl()
-        drive.encoderDrive(bl, br, fl, fr, power)
+        drive.encoderDrive(distance, moveDeg, headingDeg, power, timeOutS)
     }
 
     override fun isFinished(): Boolean {

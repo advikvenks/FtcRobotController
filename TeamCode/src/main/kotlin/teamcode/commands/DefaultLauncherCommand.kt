@@ -2,9 +2,9 @@ package teamcode.commands
 
 import com.arcrobotics.ftclib.command.CommandBase
 import com.arcrobotics.ftclib.gamepad.GamepadEx
-import teamcode.subsystems.LauncherSubsytem
+import teamcode.subsystems.LauncherSubsystem
 
-class DefaultLauncherCommand(private val launcher: LauncherSubsytem, private val gamepadEx: GamepadEx) : CommandBase() {
+class DefaultLauncherCommand(private val launcher: LauncherSubsystem, private val gamepadEx: GamepadEx) : CommandBase() {
     init {
         addRequirements(launcher)
     }

@@ -1,11 +1,9 @@
-package teamcode.commands
-
 import com.arcrobotics.ftclib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import teamcode.subsystems.LauncherSubsytem
+import teamcode.subsystems.LauncherSubsystem
 
-class LoadLauncherCommand(val launcher: LauncherSubsytem, val telemetry: Telemetry) : CommandBase() {
+class LoadLauncherCommand(val launcher: LauncherSubsystem, val telemetry: Telemetry) : CommandBase() {
     enum class LoadState {
         LOADING,
         RETURNING

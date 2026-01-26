@@ -1,6 +1,7 @@
 package teamcode.teleop
 
 import LaunchBallsCommand
+import LoadLauncherCommand
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.button.GamepadButton
 import com.arcrobotics.ftclib.gamepad.GamepadEx
@@ -11,10 +12,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import teamcode.commands.DefaultDriveCommand
 import teamcode.commands.DefaultLauncherCommand
 import teamcode.commands.IntakeCommand
-import teamcode.commands.LoadLauncherCommand
 import teamcode.subsystems.DriveSubsystem
 import teamcode.subsystems.IntakeSubsystem
-import teamcode.subsystems.LauncherSubsytem
+import teamcode.subsystems.LauncherSubsystem
 
 @TeleOp(name = "Main Op Mode")
 class MainOpMode : CommandOpMode() {
@@ -79,7 +79,7 @@ class MainOpMode : CommandOpMode() {
         val intakeCommand = IntakeCommand(intake, launchGamepad)
         intake.defaultCommand = intakeCommand
 
-        val launcher = LauncherSubsytem(launcherMotor, launcherLoader, telemetry)
+        val launcher = LauncherSubsystem(launcherMotor, launcherLoader, telemetry)
         val defaultLauncherCommand = DefaultLauncherCommand(launcher, launchGamepad)
         launcher.defaultCommand = defaultLauncherCommand
 

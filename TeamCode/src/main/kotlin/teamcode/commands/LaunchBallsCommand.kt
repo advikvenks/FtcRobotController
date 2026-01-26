@@ -1,9 +1,9 @@
 import com.arcrobotics.ftclib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
 import teamcode.subsystems.IntakeSubsystem
-import teamcode.subsystems.LauncherSubsytem
+import teamcode.subsystems.LauncherSubsystem
 
-class LaunchBallsCommand(val launcher: LauncherSubsytem, val power: Double, val balls: Int) : CommandBase() {
+class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val balls: Int) : CommandBase() {
     private val timer = ElapsedTime()
     private var state = LaunchState.SPIN_UP
     private var ballsLaunched = 0

@@ -10,7 +10,7 @@ import teamcode.commands.DriveByTimeCommand
 import teamcode.commands.IntakeCommand
 import teamcode.subsystems.DriveSubsystem
 import teamcode.subsystems.IntakeSubsystem
-import teamcode.subsystems.LauncherSubsytem
+import teamcode.subsystems.LauncherSubsystem
 
 @Autonomous(name = "Main Auto Red")
 class MainAutoRed : CommandOpMode() {
@@ -43,7 +43,7 @@ class MainAutoRed : CommandOpMode() {
 
         val drive = DriveSubsystem(frontLeft, frontRight, backLeft, backRight)
 
-        val launcher = LauncherSubsytem(launcherMotor, launcherLoader, telemetry)
+        val launcher = LauncherSubsystem(launcherMotor, launcherLoader, telemetry)
         val launchBallsCommand = LaunchBallsCommand(launcher, 1.0, 3)
 
         val intake = IntakeSubsystem(intakeMotor, telemetry)

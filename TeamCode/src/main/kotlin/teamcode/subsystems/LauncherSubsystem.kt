@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
-class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telemetry: Telemetry) : SubsystemBase() {
+class LauncherSubsystem(val launcherMotor: Motor, val loadMotor: Motor, val telemetry: Telemetry) : SubsystemBase() {
     private var targetPosition = 0
     private var isLoading = false
     private var isReturning = false
@@ -60,7 +60,7 @@ class LauncherSubsytem(val launcherMotor: Motor, val loadMotor: Motor, val telem
 
     override fun periodic() {
         if (isLoading || isReturning) {
-            loadMotor.set(0.1)
+            loadMotor.set(0.2)
         }
 
         telemetry.addData("Load Motor Position", loadMotor.encoder.position)

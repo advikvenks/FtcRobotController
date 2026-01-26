@@ -65,15 +65,6 @@ class SystemCheckOpMode : LinearOpMode() {
     }
 
     private fun launcherFlick() {
-        flickerMotor.power = 0.35
-        smartSleep(.1)
-        flickerMotor.power = 0.0
-
-        smartSleep(.2)
-
-        flickerMotor.power = -0.35
-        smartSleep(.1)
-        flickerMotor.power = 0.0
     }
 
     private fun smartSleep(seconds: Double) {
@@ -84,6 +75,8 @@ class SystemCheckOpMode : LinearOpMode() {
     }
 
     override fun runOpMode() {
+        var loadPower = 0.0
+
 
         initDevices() //initialize the motors and servos and stuff
         telemetry.addData("Status", "Initialized")
@@ -110,9 +103,15 @@ class SystemCheckOpMode : LinearOpMode() {
                 frontRightDrive.power = 1.0
             }
 
-            if (gamepad2.squareWasReleased()) {
-                launcherFlick()
+            if (gamepad1.dpadUpWasPressed()) {
+                loadPower += .05
             }
+
+            if (gamepad1.dpadDownWasPressed()) {
+                loadPower -= .05
+            }
+
+            telemetry.addData("power: ", loadPower)
 
             telemetry.update()
         }
