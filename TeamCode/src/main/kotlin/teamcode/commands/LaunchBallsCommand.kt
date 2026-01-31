@@ -33,7 +33,7 @@ class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val
         when (state) {
             LaunchState.SPIN_UP -> {
                 if (timer.seconds() >= 3.0) {
-                    launcher.startLoadingBall(90)
+                    launcher.startLoadingBall(100)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
@@ -62,7 +62,7 @@ class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val
 
             LaunchState.WAITING -> {
                 if (timer.seconds() >= 2) {
-                    launcher.startLoadingBall(90)
+                    launcher.startLoadingBall(110)
                     state = LaunchState.LOADING
                     timer.reset()
                 }

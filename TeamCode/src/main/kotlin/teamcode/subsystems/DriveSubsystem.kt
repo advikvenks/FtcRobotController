@@ -16,7 +16,7 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
-class DriveSubsystem(val frontLeft: Motor, val frontRight: Motor, val backLeft: Motor, val backRight: Motor) : SubsystemBase() {
+class DriveSubsystem(val frontLeft: Motor, val frontRight: Motor, val backLeft: Motor, val backRight: Motor, val imu: IMU) : SubsystemBase() {
     private val mecanumDrive = MecanumDrive(frontLeft, frontRight, backLeft, backRight)
 
     private val motors = arrayOf(backLeft, backRight, frontLeft, frontRight)
@@ -26,8 +26,6 @@ class DriveSubsystem(val frontLeft: Motor, val frontRight: Motor, val backLeft: 
     private var finished: Boolean = false
 
     private val headingKp = 0.015
-
-    private lateinit var imu: IMU
 
     init {
         imu.initialize(

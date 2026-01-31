@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.arcrobotics.ftclib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.IMU
 import teamcode.commands.DefaultDriveCommand
 import teamcode.commands.DefaultLauncherCommand
 import teamcode.commands.IntakeCommand
@@ -37,6 +38,8 @@ class MainOpMode : CommandOpMode() {
     private lateinit var shortOneLaunchButton: GamepadButton
 
     private lateinit var loadButton: GamepadButton
+
+    private lateinit var imu: IMU
     private fun initMotors() {
         backLeft = Motor(hardwareMap, "backLeft", Motor.GoBILDA.RPM_312)
         backRight = Motor(hardwareMap, "backRight", Motor.GoBILDA.RPM_312)
@@ -46,6 +49,9 @@ class MainOpMode : CommandOpMode() {
         intakeMotor = MotorEx(hardwareMap, "intakeMotor", Motor.GoBILDA.RPM_312)
         launcherMotor = Motor(hardwareMap, "launcherMotor")
         launcherLoader = Motor(hardwareMap, "launcherLoader", Motor.GoBILDA.RPM_312)
+
+
+        imu = hardwareMap.get(IMU::class.java, "imu")
 
         backLeft.inverted = true
         frontLeft.inverted = true
@@ -71,7 +77,7 @@ class MainOpMode : CommandOpMode() {
         initMotors()
         initGamePads()
 
-        val drive = DriveSubsystem(frontLeft, frontRight, backLeft, backRight)
+        val drive = DriveSubsystem(frontLeft, frontRight, backLeft, backRight, imu)
         drive.defaultCommand = DefaultDriveCommand(drive, driveGamepad)
 
         val intake = IntakeSubsystem(intakeMotor, telemetry)
