@@ -1,6 +1,6 @@
 package teamcode.commands
 
-import com.arcrobotics.ftclib.command.CommandBase
+import com.seattlesolvers.solverslib.command.CommandBase
 import teamcode.subsystems.DriveSubsystem
 
 class DriveByDistanceCommand(private val drive: DriveSubsystem, val distance: Double, val moveDeg: Double, val headingDeg: Double, val power: Double, val timeOutS: Double) : CommandBase() {

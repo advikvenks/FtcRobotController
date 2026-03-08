@@ -1,6 +1,6 @@
 package teamcode.autonomous
 
-import com.arcrobotics.ftclib.hardware.motors.Motor
+import com.seattlesolvers.solverslib.hardware.motors.Motor
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 

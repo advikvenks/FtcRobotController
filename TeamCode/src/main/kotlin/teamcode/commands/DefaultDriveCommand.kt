@@ -1,7 +1,7 @@
 package teamcode.commands
 
-import com.arcrobotics.ftclib.command.CommandBase
-import com.arcrobotics.ftclib.gamepad.GamepadEx
+import com.seattlesolvers.solverslib.command.CommandBase
+import com.seattlesolvers.solverslib.gamepad.GamepadEx
 import teamcode.subsystems.DriveSubsystem
 
 class DefaultDriveCommand(private val driveSubsystem: DriveSubsystem, private val gamepad: GamepadEx) : CommandBase() {

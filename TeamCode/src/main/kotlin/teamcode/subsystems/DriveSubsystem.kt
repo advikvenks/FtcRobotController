@@ -1,9 +1,9 @@
 package teamcode.subsystems
 
 import android.health.connect.datatypes.units.Power
-import com.arcrobotics.ftclib.command.SubsystemBase
-import com.arcrobotics.ftclib.drivebase.MecanumDrive
-import com.arcrobotics.ftclib.hardware.motors.Motor
+import com.seattlesolvers.solverslib.command.SubsystemBase
+import com.seattlesolvers.solverslib.drivebase.MecanumDrive
+import com.seattlesolvers.solverslib.hardware.motors.Motor
 import com.qualcomm.hardware.bosch.BNO055IMU
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot
 import com.qualcomm.robotcore.hardware.IMU

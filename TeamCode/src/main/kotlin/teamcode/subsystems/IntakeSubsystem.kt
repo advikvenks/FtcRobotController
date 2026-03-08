@@ -1,8 +1,8 @@
 package teamcode.subsystems
 
-import com.arcrobotics.ftclib.command.SubsystemBase
-import com.arcrobotics.ftclib.hardware.motors.Motor
-import com.arcrobotics.ftclib.hardware.motors.MotorEx
+import com.seattlesolvers.solverslib.command.SubsystemBase
+import com.seattlesolvers.solverslib.hardware.motors.Motor
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.Telemetry
 

@@ -1,10 +1,10 @@
 package teamcode.autonomous
 
 import LaunchBallsCommand
-import com.arcrobotics.ftclib.command.CommandOpMode
-import com.arcrobotics.ftclib.command.SequentialCommandGroup
-import com.arcrobotics.ftclib.hardware.motors.Motor
-import com.arcrobotics.ftclib.hardware.motors.MotorEx
+import com.seattlesolvers.solverslib.command.CommandOpMode
+import com.seattlesolvers.solverslib.command.SequentialCommandGroup
+import com.seattlesolvers.solverslib.hardware.motors.Motor
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.hardware.IMU
 import teamcode.commands.DriveByTimeCommand

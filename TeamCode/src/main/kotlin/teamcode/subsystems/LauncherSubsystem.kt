@@ -1,7 +1,7 @@
 package teamcode.subsystems
 
-import com.arcrobotics.ftclib.command.SubsystemBase
-import com.arcrobotics.ftclib.hardware.motors.Motor
+import com.seattlesolvers.solverslib.command.SubsystemBase
+import com.seattlesolvers.solverslib.hardware.motors.Motor
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
 class LauncherSubsystem(val launcherMotor: Motor, val loadMotor: Motor, val telemetry: Telemetry) : SubsystemBase() {

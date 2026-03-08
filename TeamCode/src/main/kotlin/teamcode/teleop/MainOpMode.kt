@@ -2,12 +2,12 @@ package teamcode.teleop
 
 import LaunchBallsCommand
 import LoadLauncherCommand
-import com.arcrobotics.ftclib.command.CommandOpMode
-import com.arcrobotics.ftclib.command.button.GamepadButton
-import com.arcrobotics.ftclib.gamepad.GamepadEx
-import com.arcrobotics.ftclib.gamepad.GamepadKeys
-import com.arcrobotics.ftclib.hardware.motors.Motor
-import com.arcrobotics.ftclib.hardware.motors.MotorEx
+import com.seattlesolvers.solverslib.command.CommandOpMode
+import com.seattlesolvers.solverslib.command.button.GamepadButton
+import com.seattlesolvers.solverslib.gamepad.GamepadEx
+import com.seattlesolvers.solverslib.gamepad.GamepadKeys
+import com.seattlesolvers.solverslib.hardware.motors.Motor
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.IMU
 import teamcode.commands.DefaultDriveCommand

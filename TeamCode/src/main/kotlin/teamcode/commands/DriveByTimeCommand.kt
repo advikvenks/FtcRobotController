@@ -1,6 +1,6 @@
 package teamcode.commands
 
-import com.arcrobotics.ftclib.command.CommandBase
+import com.seattlesolvers.solverslib.command.CommandBase
 import teamcode.subsystems.DriveSubsystem
 
 class DriveByTimeCommand(private val drive: DriveSubsystem, val power: Double, val angle: Double, val time: Double) : CommandBase() {
