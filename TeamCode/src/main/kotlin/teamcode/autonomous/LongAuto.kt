@@ -48,7 +48,7 @@ class LongAuto : CommandOpMode() {
         val drive = DriveSubsystem(frontLeft, frontRight, backLeft, backRight, imu)
 
         val launcher = LauncherSubsystem(launcherMotor, launcherLoader, telemetry)
-        val launchBallsCommand = LaunchBallsCommand(launcher, 1.0, 3)
+        val launchBallsCommand = LaunchBallsCommand(launcher, 1.0, 5, 2.0)
 
         val intake = IntakeSubsystem(intakeMotor, telemetry)
 
@@ -60,7 +60,7 @@ class LongAuto : CommandOpMode() {
             schedule(
                 SequentialCommandGroup (
                     launchBallsCommand,
-                    DriveByTimeCommand(drive, power, power, power, power, 1.0),
+                    DriveByTimeCommand(drive, power, 0.0, 0.5),
                 )
             )
         }

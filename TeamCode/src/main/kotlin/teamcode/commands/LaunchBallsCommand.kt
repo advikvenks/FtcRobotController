@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import teamcode.subsystems.IntakeSubsystem
 import teamcode.subsystems.LauncherSubsystem
 
-class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val balls: Int) : CommandBase() {
+class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val balls: Int, val timeout: Double) : CommandBase() {
     private val timer = ElapsedTime()
     private var state = LaunchState.SPIN_UP
     private var ballsLaunched = 0
@@ -33,7 +33,7 @@ class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val
         when (state) {
             LaunchState.SPIN_UP -> {
                 if (timer.seconds() >= 3.0) {
-                    launcher.startLoadingBall(100)
+                    launcher.startLoadingBall(110)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
@@ -48,7 +48,8 @@ class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val
             }
 
             LaunchState.RETURNING -> {
-                if (launcher.isReturningComplete()) {
+                timer.reset()
+                if (launcher.isReturningComplete() || timer.seconds() > timeout) {
                     launcher.resetLoader()
                     ballsLaunched++
                     if (ballsLaunched >= balls) {

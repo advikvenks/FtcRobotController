@@ -12,8 +12,8 @@ import teamcode.subsystems.DriveSubsystem
 import teamcode.subsystems.IntakeSubsystem
 import teamcode.subsystems.LauncherSubsystem
 
-@Autonomous(name = "Short Auto Red")
-class ShortAutoRed : CommandOpMode() {
+@Autonomous(name = "Short Auto Blue")
+class ShortAutoBlue : CommandOpMode() {
     private lateinit var backLeft: Motor
     private lateinit var backRight: Motor
     private lateinit var frontLeft: Motor
@@ -59,7 +59,7 @@ class ShortAutoRed : CommandOpMode() {
                 SequentialCommandGroup (
                     DriveByTimeCommand(drive, 0.5, 180.0, 1.0),
                     launchBallsCommand,
-                    DriveByTimeCommand(drive, 0.4, 270.0, 1.0)
+                    DriveByTimeCommand(drive, 0.4, 90.0, 1.0)
                 )
             )
         }

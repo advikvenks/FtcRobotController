@@ -101,23 +101,39 @@ class DriveSubsystem(val frontLeft: Motor, val frontRight: Motor, val backLeft: 
         motors.forEach { it.stopMotor() }
     }
 
-    fun timeDrive(bl: Double, br: Double, fl: Double, fr: Double, time: Double, delay: Double = 0.0) {
-        if (abs(bl) == abs(br) && abs(fl) == abs(fr) && abs(bl) == abs(fl)) {
-            timer.reset()
+    fun timeDrive(power: Double, angle: Double, time: Double) {
+        val x = power * sin(toRadians(angle))
+        val y = power * cos(toRadians(angle))
 
-            while (timer.seconds() < time) {
-                customPowers(arrayOf(bl, br, fl, fr))
-            }
+        var bl = y - x
+        var br = y + x
+        var fl = y + x
+        var fr = y - x
 
-            for (i in 0 until 4) {
-                motors[i].stopMotor()
-            }
+        val max = maxOf(
+            abs(bl), abs(br), abs(fl), abs(fr)
+        )
 
-            timer.reset()
-            while (timer.seconds() < delay) {
+        if (max > 1.0) {
+            bl /= max
+            br /= max
+            fl /= max
+            fr /= max
+        }
 
-            }
-            finished = true
+        backLeft.set(bl)
+        backRight.set(br)
+        frontLeft.set(fl)
+        frontRight.set(fr)
+
+        timer.reset()
+
+        while (timer.seconds() < time) {
+
+        }
+
+        for (m in motors) {
+            m.stopMotor()
         }
     }
 

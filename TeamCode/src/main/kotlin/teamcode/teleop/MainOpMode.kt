@@ -91,10 +91,10 @@ class MainOpMode : CommandOpMode() {
 
         val loadCommand = LoadLauncherCommand(launcher, telemetry)
 
-        longThreeLaunchButton.whenPressed(LaunchBallsCommand(launcher, 1.0, 3))
-        longOneLaunchButton.whenPressed(LaunchBallsCommand(launcher, 1.0, 1))
-        shortThreeLaunchButton.whenPressed(LaunchBallsCommand(launcher, 0.8, 3))
-        shortOneLaunchButton.whenPressed(LaunchBallsCommand(launcher, 0.8, 1))
+        longThreeLaunchButton.whenPressed(LaunchBallsCommand(launcher, 1.0, 3, 2.0))
+        longOneLaunchButton.whenPressed(LaunchBallsCommand(launcher, 1.0, 1, 2.0))
+        shortThreeLaunchButton.whenPressed(LaunchBallsCommand(launcher, 0.8, 3, 2.0))
+        shortOneLaunchButton.whenPressed(LaunchBallsCommand(launcher, 0.8, 1, 2.0))
 
         loadButton.whenPressed(loadCommand)
     }

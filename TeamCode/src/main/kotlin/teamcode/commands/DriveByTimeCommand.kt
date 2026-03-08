@@ -3,13 +3,13 @@ package teamcode.commands
 import com.arcrobotics.ftclib.command.CommandBase
 import teamcode.subsystems.DriveSubsystem
 
-class DriveByTimeCommand(private val drive: DriveSubsystem, val bl: Double, val br: Double, val fl: Double, val fr: Double, val time: Double, val delay: Double = 0.0) : CommandBase() {
+class DriveByTimeCommand(private val drive: DriveSubsystem, val power: Double, val angle: Double, val time: Double) : CommandBase() {
     init {
         addRequirements(drive)
     }
 
     override fun initialize() {
-        drive.timeDrive(bl, br, fl, fr, time, delay)
+        drive.timeDrive(power, angle, time)
     }
 
     override fun isFinished(): Boolean {
