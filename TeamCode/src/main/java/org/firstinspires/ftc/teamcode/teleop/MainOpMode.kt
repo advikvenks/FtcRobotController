@@ -1,7 +1,7 @@
 package teamcode.teleop
 
-import LaunchBallsCommand
-import LoadLauncherCommand
+import org.firstinspires.ftc.teamcode.commands.LaunchBallsCommand
+import org.firstinspires.ftc.teamcode.commands.LoadLauncherCommand
 import com.seattlesolvers.solverslib.command.CommandOpMode
 import com.seattlesolvers.solverslib.command.button.GamepadButton
 import com.seattlesolvers.solverslib.gamepad.GamepadEx

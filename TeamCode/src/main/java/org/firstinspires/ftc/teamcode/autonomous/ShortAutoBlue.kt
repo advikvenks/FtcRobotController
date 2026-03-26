@@ -1,6 +1,6 @@
 package teamcode.autonomous
 
-import LaunchBallsCommand
+import org.firstinspires.ftc.teamcode.commands.LaunchBallsCommand
 import com.seattlesolvers.solverslib.command.CommandOpMode
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup
 import com.seattlesolvers.solverslib.hardware.motors.Motor
