@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.commands
 
 import com.seattlesolvers.solverslib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
-import teamcode.subsystems.IntakeSubsystem
-import teamcode.subsystems.LauncherSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.LauncherSubsystem
 
 class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val balls: Int, val timeout: Double) : CommandBase() {
     private val timer = ElapsedTime()

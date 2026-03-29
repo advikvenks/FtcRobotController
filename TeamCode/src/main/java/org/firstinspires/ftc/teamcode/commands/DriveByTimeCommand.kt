@@ -1,7 +1,7 @@
-package teamcode.commands
+package org.firstinspires.ftc.teamcode.commands
 
 import com.seattlesolvers.solverslib.command.CommandBase
-import teamcode.subsystems.DriveSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem
 
 class DriveByTimeCommand(private val drive: DriveSubsystem, val power: Double, val angle: Double, val time: Double) : CommandBase() {
     init {

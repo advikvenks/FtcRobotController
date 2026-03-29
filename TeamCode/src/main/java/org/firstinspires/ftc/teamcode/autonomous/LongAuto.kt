@@ -7,10 +7,10 @@ import com.seattlesolvers.solverslib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.hardware.IMU
 import org.firstinspires.ftc.teamcode.commands.LaunchBallsCommand
-import teamcode.commands.DriveByTimeCommand
-import teamcode.subsystems.DriveSubsystem
-import teamcode.subsystems.IntakeSubsystem
-import teamcode.subsystems.LauncherSubsystem
+import org.firstinspires.ftc.teamcode.commands.DriveByTimeCommand
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.LauncherSubsystem
 
 @Autonomous(name = "Long Auto")
 class LongAuto : CommandOpMode() {

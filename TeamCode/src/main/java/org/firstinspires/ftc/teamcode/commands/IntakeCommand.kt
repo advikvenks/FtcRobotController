@@ -1,9 +1,9 @@
-package teamcode.commands
+package org.firstinspires.ftc.teamcode.commands
 
 import com.seattlesolvers.solverslib.command.CommandBase
 import com.seattlesolvers.solverslib.gamepad.GamepadEx
 import com.qualcomm.robotcore.util.ElapsedTime
-import teamcode.subsystems.IntakeSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem
 
 class IntakeCommand(private val intake: IntakeSubsystem, private val gamepadEx: GamepadEx) : CommandBase() {
     private var timer = ElapsedTime()

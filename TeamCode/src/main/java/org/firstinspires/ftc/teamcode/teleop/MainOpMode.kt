@@ -10,12 +10,12 @@ import com.seattlesolvers.solverslib.hardware.motors.Motor
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.IMU
-import teamcode.commands.DefaultDriveCommand
-import teamcode.commands.DefaultLauncherCommand
-import teamcode.commands.IntakeCommand
-import teamcode.subsystems.DriveSubsystem
-import teamcode.subsystems.IntakeSubsystem
-import teamcode.subsystems.LauncherSubsystem
+import org.firstinspires.ftc.teamcode.commands.DefaultDriveCommand
+import org.firstinspires.ftc.teamcode.commands.DefaultLauncherCommand
+import org.firstinspires.ftc.teamcode.commands.IntakeCommand
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.LauncherSubsystem
 
 @TeleOp(name = "Main Op Mode")
 class MainOpMode : CommandOpMode() {

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.commands
 import com.seattlesolvers.solverslib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import teamcode.subsystems.LauncherSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.LauncherSubsystem
 
 class LoadLauncherCommand(val launcher: LauncherSubsystem, val telemetry: Telemetry) : CommandBase() {
     enum class LoadState {

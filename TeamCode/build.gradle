@@ -17,6 +17,8 @@ apply from: '../build.dependencies.gradle'
 apply plugin: 'kotlin-android'
 
 android {
+    // ...
+
     namespace = 'org.firstinspires.ftc.teamcode'
 
     packagingOptions {

@@ -1,8 +1,8 @@
-package teamcode.commands
+package org.firstinspires.ftc.teamcode.commands
 
 import com.seattlesolvers.solverslib.command.CommandBase
 import com.seattlesolvers.solverslib.gamepad.GamepadEx
-import teamcode.subsystems.LauncherSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.LauncherSubsystem
 
 class DefaultLauncherCommand(private val launcher: LauncherSubsystem, private val gamepadEx: GamepadEx) : CommandBase() {
     init {
