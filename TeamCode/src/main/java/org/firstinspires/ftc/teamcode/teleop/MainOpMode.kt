@@ -1,5 +1,6 @@
 package teamcode.teleop
 
+import com.qualcomm.hardware.limelightvision.Limelight3A
 import org.firstinspires.ftc.teamcode.commands.LaunchBallsCommand
 import org.firstinspires.ftc.teamcode.commands.LoadLauncherCommand
 import com.seattlesolvers.solverslib.command.CommandOpMode
@@ -13,12 +14,19 @@ import com.qualcomm.robotcore.hardware.IMU
 import org.firstinspires.ftc.teamcode.commands.DefaultDriveCommand
 import org.firstinspires.ftc.teamcode.commands.DefaultLauncherCommand
 import org.firstinspires.ftc.teamcode.commands.IntakeCommand
+import org.firstinspires.ftc.teamcode.commands.TrackTargetCommand
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.LauncherSubsystem
+import org.firstinspires.ftc.teamcode.subsystems.LimelightSubsystem
 
 @TeleOp(name = "Main Op Mode")
 class MainOpMode : CommandOpMode() {
+    private lateinit var limelightSubsystem: LimelightSubsystem
+    private lateinit var limelight : Limelight3A
+
+    private lateinit var trackButton: GamepadButton
+
     private lateinit var backLeft: Motor
     private lateinit var backRight: Motor
     private lateinit var frontLeft: Motor
@@ -50,7 +58,7 @@ class MainOpMode : CommandOpMode() {
         launcherMotor = Motor(hardwareMap, "launcherMotor")
         launcherLoader = Motor(hardwareMap, "launcherLoader", Motor.GoBILDA.RPM_312)
 
-
+        limelight = hardwareMap.get(Limelight3A::class.java, "limelight")
         imu = hardwareMap.get(IMU::class.java, "imu")
 
         backLeft.inverted = true
@@ -70,6 +78,7 @@ class MainOpMode : CommandOpMode() {
         shortThreeLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.Y)
         shortOneLaunchButton = GamepadButton(launchGamepad, GamepadKeys.Button.X)
 
+        trackButton = GamepadButton(driveGamepad, GamepadKeys.Button.LEFT_BUMPER)
         loadButton = GamepadButton(launchGamepad, GamepadKeys.Button.DPAD_UP)
     }
 
@@ -97,5 +106,10 @@ class MainOpMode : CommandOpMode() {
         shortOneLaunchButton.whenPressed(LaunchBallsCommand(launcher, 0.8, 1, 2.0))
 
         loadButton.whenPressed(loadCommand)
+
+        limelightSubsystem = LimelightSubsystem(limelight, telemetry)
+        val trackCommand = TrackTargetCommand(drive, limelightSubsystem)
+        trackButton.whileHeld(trackCommand)
+
     }
 }
