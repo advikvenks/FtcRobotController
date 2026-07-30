@@ -106,8 +106,8 @@ class JohnJankBot : CommandOpMode() {
         try {
             tts = AndroidTextToSpeech()
             tts?.initialize()
-            tts?.setPitch(0.4f) // Deep voice
-            tts?.setSpeechRate(0.85f) // Slow Texas drawl
+            tts?.setPitch(1.0f)
+            tts?.setSpeechRate(1.0f)
 
             socket = DatagramSocket(recPort)
             macAddr = InetAddress.getByName(macIp)
@@ -119,7 +119,15 @@ class JohnJankBot : CommandOpMode() {
                     while (!isStopRequested) {
                         val packet = DatagramPacket(buffer, buffer.size)
                         socket?.receive(packet)
-                        val joke = String(packet.data, 0, packet.length)
+
+                        // 1. Force UTF-8 decoding
+                        val joke = String(packet.data, 0, packet.length, Charsets.UTF_8)
+
+                        // 2. Print what the robot received to the Driver Station
+                        telemetry.addData("Last Received", joke)
+                        telemetry.update()
+
+                        // 3. Speak the joke
                         tts?.speak(joke)
                     }
                 } catch (e: Exception) {}
