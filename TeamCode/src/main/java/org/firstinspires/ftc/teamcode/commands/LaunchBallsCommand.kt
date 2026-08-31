@@ -35,7 +35,7 @@ class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val
         when (state) {
             LaunchState.SPIN_UP -> {
                 if (timer.seconds() >= 3.0) {
-                    launcher.startLoadingBall(110)
+                    launcher.startLoadingBall(120)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
@@ -50,22 +50,23 @@ class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val
             }
 
             LaunchState.RETURNING -> {
-                timer.reset()
-                if (launcher.isReturningComplete() || timer.seconds() > timeout) {
-                    launcher.resetLoader()
-                    ballsLaunched++
-                    if (ballsLaunched >= balls) {
-                        state = LaunchState.DONE
-                    } else {
-                        state = LaunchState.WAITING
-                        timer.reset()
+                if (timer.seconds() >= 2.0) {
+                    if (launcher.isReturningComplete() || timer.seconds() > timeout) {
+                        launcher.resetLoader()
+                        ballsLaunched++
+                        if (ballsLaunched >= balls) {
+                            state = LaunchState.DONE
+                        } else {
+                            state = LaunchState.WAITING
+                            timer.reset()
+                        }
                     }
                 }
             }
 
             LaunchState.WAITING -> {
                 if (timer.seconds() >= 2) {
-                    launcher.startLoadingBall(110)
+                    launcher.startLoadingBall(120)
                     state = LaunchState.LOADING
                     timer.reset()
                 }
@@ -73,8 +74,6 @@ class LaunchBallsCommand(val launcher: LauncherSubsystem, val power: Double, val
 
 
             LaunchState.DONE -> {
-                timer.reset()
-
                 if (timer.seconds() >= 3.0) {
                     launcher.slowDownLauncher()
                     launcher.resetLoader()

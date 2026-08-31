@@ -82,8 +82,7 @@ class MainOpMode : CommandOpMode() {
 
         val intake = IntakeSubsystem(intakeMotor, telemetry)
 
-        val intakeCommand = IntakeCommand(intake, launchGamepad)
-        intake.defaultCommand = intakeCommand
+        intake.defaultCommand = IntakeCommand(intake, 0.0, launchGamepad)
 
         val launcher = LauncherSubsystem(launcherMotor, launcherLoader, telemetry)
         val defaultLauncherCommand = DefaultLauncherCommand(launcher, launchGamepad)

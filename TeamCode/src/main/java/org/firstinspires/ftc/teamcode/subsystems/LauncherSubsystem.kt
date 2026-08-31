@@ -2,19 +2,21 @@ package org.firstinspires.ftc.teamcode.subsystems
 import com.seattlesolvers.solverslib.command.SubsystemBase
 import com.seattlesolvers.solverslib.hardware.motors.Motor
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import kotlin.math.max
 
 class LauncherSubsystem(val launcherMotor: Motor, val loadMotor: Motor, val telemetry: Telemetry) : SubsystemBase() {
     private var targetPosition = 0
     private var isLoading = false
     private var isReturning = false
 
-    private val cpr = 28
+
+    var max = 0;
 
     init {
         loadMotor.resetEncoder()
         loadMotor.setRunMode(Motor.RunMode.PositionControl)
         loadMotor.positionCoefficient = 0.04
-        loadMotor.setPositionTolerance(5.0)
+        loadMotor.setPositionTolerance(10.0)
         loadMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
     }
 
@@ -59,15 +61,22 @@ class LauncherSubsystem(val launcherMotor: Motor, val loadMotor: Motor, val tele
 
     override fun periodic() {
         if (isLoading || isReturning) {
-            loadMotor.set(0.2)
+            loadMotor.set(0.25)
         }
 
-        telemetry.addData("Load Motor Position", loadMotor.encoder.position)
+        telemetry.addData("Load Motor Max Position", maxPos())
         telemetry.addData("Load Motor Target", targetPosition)
         telemetry.addData("Load Motor At Target", loadMotor.atTargetPosition())
         telemetry.addData("Is Loading", isLoading)
         telemetry.addData("Is Returning", isReturning)
         telemetry.update()
+    }
+
+    fun maxPos(): Int {
+        if (loadMotor.encoder.position > max) {
+            max = loadMotor.encoder.position
+        }
+        return max
     }
 
     fun resetLoader() {
